@@ -35,9 +35,10 @@ You can run the script on the terminal manually or run it as a cron job.
 ####Terminal Command
 Run the script on the terminal using the command: 
 ```$ python slee.py```
-You should get a terminal message if there is an error.
 
 ####Cron Job
 The script can be run as a cron job. You can also pipe the message outputs to a logfile if you want.
+
+Example:
 
 ```00 08 * * * /path/to/file/slee.py >> /var/log/sleepy.log```
