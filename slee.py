@@ -113,4 +113,4 @@ def beautify_incidents(ugly_incidents):
 		create_ticket(subject, body)
 
 incidents = get_incidents()
-# beautify_incidents(incidents)
+beautify_incidents(incidents)
