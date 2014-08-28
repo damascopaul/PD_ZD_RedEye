@@ -20,7 +20,8 @@ Be sure to set the global variables before running the script.
 Global variable      | Description
 -------------------- | -----------
 PD_SUBDOMAIN         | PagerDuty Subdomain Name
-PD\_API\_ACCESS_KEY  | PD API Token
+PD_USER				 | PD Username
+PD_PWD 				 | PD User Password
 ZD_SUBDOMAIN			 | ZenDesk Subdomain Name
 ZD_USER				 | ZenDesk Username
 ZD_PWD			   		 | ZenDesk Password

@@ -9,7 +9,8 @@ TIME=datetime.datetime.utcnow()
 
 #PagerDuty Specific Variables
 PD_SUBDOMAIN=''
-PD_API_ACCESS_KEY=''
+PD_USER=''
+PD_PWD=''
 
 #ZenDesk Specific Variables
 ZD_SUBDOMAIN=''
@@ -27,7 +28,6 @@ def get_incidents():
 	T_UNTIL=str(TIME.year)+"-"+str(TIME.month)+"-"+str(TIME.day)+"T00:00Z"
 
     	headers = {
-        		'Authorization': 'Token token={0}'.format(PD_API_ACCESS_KEY),
         		'Content-type': 'application/json',
     	}
     	parameters = {
@@ -43,10 +43,11 @@ def get_incidents():
 		           'https://{0}.pagerduty.com/api/v1/incidents'.format(PD_SUBDOMAIN),
 		           headers=headers,
 		           params=parameters,
+		           auth=(PD_USER, PD_PWD),
     		) 
     		response.raise_for_status()
     		data = json.loads(response.text)
-    		print '{0} : PD : {1} PD Incidents were queried successfully.'.format(TIME, response.status)
+    		print '{0} : PD : {1} PD Incidents were queried successfully.'.format(TIME, response.status_code)
     	except requests.exceptions.ConnectionError as e:
     		print '{1} : PD : There is a problem with your network. {0}'.format(e, TIME)
     		sys.exit(0)
@@ -112,4 +113,4 @@ def beautify_incidents(ugly_incidents):
 		create_ticket(subject, body)
 
 incidents = get_incidents()
-beautify_incidents(incidents)
+# beautify_incidents(incidents)
