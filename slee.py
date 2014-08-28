@@ -3,6 +3,7 @@ import requests
 import datetime
 import json
 import requests.exceptions
+import sys
 
 TIME=datetime.datetime.utcnow()
 
@@ -39,20 +40,25 @@ def get_incidents():
     	}
     	try:
     		response = requests.get(
-		           'https://{0}.pagerdutsy.com/api/v1/incidents'.format(PD_SUBDOMAIN),
+		           'https://{0}.pagerduty.com/api/v1/incidents'.format(PD_SUBDOMAIN),
 		           headers=headers,
 		           params=parameters,
     		) 
     		response.raise_for_status()
     		data = json.loads(response.text)
+    		print '{0} : PD : {1} PD Incidents were queried successfully.'.format(TIME, response.status)
     	except requests.exceptions.ConnectionError as e:
     		print '{1} : PD : There is a problem with your network. {0}'.format(e, TIME)
+    		sys.exit(0)
     	except requests.exceptions.HTTPError as e:
     		print '{1} : PD : An error occured. {0}'.format(e, TIME)
+    		sys.exit(0)
     	except requests.packages.urllib3.exceptions.ProtocolError as e:
     		print '{2} : PD : An Error Occured: {0} {1}'.format(e[0], e[1][1], TIME)
+    		sys.exit(0)
     	except Exception as e:
     		print '{1} : PD : Unexpected error: {0}'.format(e, TIME)
+    		sys.exit(0)
 
     	return data
 
@@ -83,14 +89,19 @@ def create_ticket(subject, body):
 		            auth=(ZD_USER, ZD_PWD),
 	    	)
 	    	response.raise_for_status()
+	    	print '{1} : ZD : Successfully created ticket'.format(TIME)
 	except requests.exceptions.ConnectionError as e:
     		print '{1} : ZD : There is a problem with your network. {0}'.format(e, TIME)
+    		sys.exit(0)
 	except requests.exceptions.InvalidURL as e:
 		print "{1} : ZD : {0}".format(e, TIME)
+		sys.exit(0)
 	except requests.exceptions.HTTPError as e:
     		print '{1} : ZD : An error occured. {0}'.format(e, TIME)
+    		sys.exit(0)
     	except Exception as e:
     		print '{1} : ZD : Unexpected error: {0}'.format(e, TIME)
+    		sys.exit(0)
 
 #Parses and formats the json  response from the get_incidents function
 #and creates a new ticket in ZenDesk for each incident.
